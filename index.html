@@ -95,6 +95,7 @@ button.primary{background:#2563eb;color:white}.warn{background:#fee2e2;color:#99
 <script>
 const products=[{key:"easy",name:"おてがるな品",price:3,cost:1,sat:2,load:3},{key:"normal",name:"ふつうの品",price:5,cost:2,sat:2,load:2},{key:"premium",name:"こだわりの品",price:7,subsidizedPrice:4,cost:4,sat:2,load:1}];
 const lives=[{key:"convenient",name:"便利な生活",cost:4,sat:3,load:3},{key:"moderate",name:"ほどほどの生活",cost:2,sat:2,load:1},{key:"endure",name:"がまんする",cost:0,sat:0,load:0}];
+const climateLives=[...lives,{key:"none",name:"この班は存在しない",cost:0,sat:0,load:0}];
 const turns=[1,2,3,4];
 function n(id){return Number(document.getElementById(id)?.value||0)}
 function txt(id,v){const e=document.getElementById(id);if(e)e.textContent=v}
@@ -199,7 +200,7 @@ function buildClimate(){
  turns.forEach(t=>{
   h+=`<h3>第${t}ターン</h3><table><tr><th>区分</th><th>班</th><th>おてがるな品<br>作った数</th><th>ふつうの品<br>作った数</th><th>こだわりの品<br>作った数</th><th>生活カード</th><th>見えない負荷</th></tr>`;
   for(let g=1;g<=4;g++)h+=`<tr><td>企業</td><td>${g}班</td>${products.map(p=>`<td><input id="k_t${t}_g${g}_${p.key}" type="number" min="0"></td>`).join("")}<td class="readonly">－</td><td id="k_t${t}_g${g}_load" class="readonly"></td></tr>`;
-  for(let g=5;g<=8;g++)h+=`<tr><td>消費者</td><td>${g}班</td><td class="readonly">－</td><td class="readonly">－</td><td class="readonly">－</td><td><select id="k_t${t}_g${g}_life">${lives.map(l=>`<option value="${l.key}">${l.name}</option>`).join("")}</select></td><td id="k_t${t}_g${g}_load" class="readonly"></td></tr>`;
+  for(let g=5;g<=8;g++)h+=`<tr><td>消費者</td><td>${g}班</td><td class="readonly">－</td><td class="readonly">－</td><td class="readonly">－</td><td><select id="k_t${t}_g${g}_life">${climateLives.map(l=>`<option value="${l.key}">${l.name}</option>`).join("")}</select></td><td id="k_t${t}_g${g}_load" class="readonly"></td></tr>`;
   h+=`<tr><th colspan="6">第${t}ターン合計</th><th id="k_t${t}_total"></th></tr><tr><th colspan="6">累積</th><th id="k_t${t}_cum"></th></tr></table>`;
  });
  climateTables.innerHTML=h;
@@ -209,7 +210,7 @@ function calcClimate(){
  turns.forEach(t=>{
   let total=0;
   for(let g=1;g<=4;g++){let load=0;products.forEach(p=>load+=n(`k_t${t}_g${g}_${p.key}`)*p.load);total+=load;txt(`k_t${t}_g${g}_load`,load)}
-  for(let g=5;g<=8;g++){let life=lives.find(l=>l.key===document.getElementById(`k_t${t}_g${g}_life`).value);total+=life.load;txt(`k_t${t}_g${g}_load`,life.load)}
+  for(let g=5;g<=8;g++){let life=climateLives.find(l=>l.key===document.getElementById(`k_t${t}_g${g}_life`).value)||climateLives[0];total+=life.load;txt(`k_t${t}_g${g}_load`,life.load)}
   cum+=total;txt(`k_t${t}_total`,total);txt(`k_t${t}_cum`,cum);
  });
  saveAll();
