@@ -32,7 +32,6 @@ button.primary{background:#2563eb;color:white}.warn{background:#fee2e2;color:#99
 <button class="tab active" data-tab="enterprise">企業班</button>
 <button class="tab" data-tab="consumer">消費者班</button>
 <button class="tab" data-tab="climate">気候記録班</button>
-<button class="tab" data-tab="rules">早見表</button>
 </div>
 
 <section id="enterprise" class="activeSection"><div class="box">
@@ -42,7 +41,7 @@ button.primary{background:#2563eb;color:white}.warn{background:#fee2e2;color:#99
 <label>最初の所持金<input id="e_initial" type="number" value="30"></label>
 
 </div>
-<p class="note">終了時の残金は次ターンへ持ち越します。開始在庫と終了在庫は自動計算です。第3ターンは、第2ターンの売上を上回るとボーナス5Gが入ります。最後に、作った商品にかかる環境負荷と「売上−環境負荷」を表示します。</p>
+<p class="note">終了時の残金は次ターンへ持ち越します。開始在庫と終了在庫は自動計算です。</p>
 <div class="actions"><button class="primary" onclick="calcEnterprise()">計算する</button><button onclick="window.print()">印刷</button><button class="warn" onclick="clearArea('enterprise')">企業班データを消す</button></div>
 <h3>販売価格・生産コスト</h3>
 <table>
@@ -51,7 +50,7 @@ button.primary{background:#2563eb;color:white}.warn{background:#fee2e2;color:#99
 <tr><td>ふつうの品</td><td>5G</td><td>2G</td></tr>
 <tr><td>こだわりの品</td><td>7G</td><td>4G</td></tr>
 </table>
-<p class="note">第4ターンで補助を使う場合、こだわりの品は販売価格4G・生産コスト1Gとして計算されます。</p>
+<p class="note">第4ターンでは、こだわりの品は自動で販売価格4G・生産コスト1Gとして計算されます。</p>
 
 <div id="enterpriseTables"></div>
 </div></section>
@@ -61,9 +60,8 @@ button.primary{background:#2563eb;color:white}.warn{background:#fee2e2;color:#99
 <div class="grid">
 <label>班名<input id="c_name" placeholder="例：5班"></label>
 <label>最初の所持金<input id="c_initial" type="number" value="50"></label>
-<label><input id="c_subsidy" type="checkbox" style="width:auto"> 第4ターン補助：こだわりの品を4Gで計算</label>
 </div>
-<p class="note">50Gを4ターン通して使います。第2ターンで生産された「トレンド商品」を買った場合は、いつ買っても商品1個あたり満足度が+1されます。最後に、買った商品にかかっていた環境負荷と「合計満足度−環境負荷」を表示します。</p>
+<p class="note">50Gを4ターン通して使います。</p>
 <div class="actions"><button class="primary" onclick="calcConsumer()">計算する</button><button onclick="window.print()">印刷</button><button class="warn" onclick="clearArea('consumer')">消費者班データを消す</button></div>
 <div id="consumerTables"></div>
 </div></section>
@@ -72,24 +70,25 @@ button.primary{background:#2563eb;color:white}.warn{background:#fee2e2;color:#99
 <h2>気候記録班 記録</h2>
 <p class="note">この画面は他班に見せない想定です。商品は「作った数」、生活は「選んだ生活カード」で見えない負荷を計算します。</p>
 <div class="actions"><button class="primary" onclick="calcClimate()">計算する</button><button onclick="window.print()">印刷</button><button class="warn" onclick="clearArea('climate')">気候記録班データを消す</button></div>
-<div id="climateTables"></div>
-</div></section>
-
-<section id="rules"><div class="box">
-<h2>早見表</h2>
+<div class="box" style="background:#fffbeb;border-color:#f59e0b">
+<h2>気候記録班用 早見表</h2>
+<p class="note">この早見表は気候記録班だけが使います。第3ターン終了まで、見えない負荷の数値を他班に見せないでください。</p>
 <h3>商品</h3>
 <table><tr><th>商品</th><th>販売価格</th><th>生産コスト</th><th>満足度</th><th>見えない負荷</th></tr>
 <tr><td>おてがるな品</td><td>3G</td><td>1G</td><td>+2</td><td>3</td></tr>
 <tr><td>ふつうの品</td><td>5G</td><td>2G</td><td>+2</td><td>2</td></tr>
-<tr><td>こだわりの品</td><td>7G（補助後4G）</td><td>4G</td><td>+2</td><td>1</td></tr></table>
-<p class="note">第2ターンで生産された商品は「トレンド商品」として扱い、いつ売れても商品1個あたり満足度が+1されます。第3ターンは、企業班の売上が第2ターンの売上を上回るとボーナス5Gが入ります。</p>
-<p class="note">トレンド商品＝第2ターンで生産された商品。第3・第4ターンに売れても、通常の商品より満足度が1高くなります。</p>
+<tr><td>こだわりの品</td><td>7G<br>第4ターンは4G</td><td>4G<br>第4ターンは1G</td><td>+2</td><td>1</td></tr></table>
+<p class="note">第2ターンで生産された商品は「トレンド商品」として扱い、いつ売れても商品1個あたり満足度が+1されます。環境負荷は通常商品と同じです。第3ターンは、企業班の売上が第2ターンの売上を上回るとボーナス5Gが入ります。</p>
 <h3>生活カード</h3>
 <table><tr><th>生活</th><th>費用</th><th>満足度</th><th>見えない負荷</th></tr>
 <tr><td>便利な生活</td><td>4G</td><td>+3</td><td>3</td></tr>
 <tr><td>ほどほどの生活</td><td>2G</td><td>+2</td><td>1</td></tr>
-<tr><td>がまんする</td><td>0G</td><td>0</td><td>0</td></tr></table>
+<tr><td>がまんする</td><td>0G</td><td>0</td><td>0</td></tr>
+<tr><td>この班は存在しない</td><td>0G</td><td>0</td><td>0</td></tr></table>
+</div>
+<div id="climateTables"></div>
 </div></section>
+
 </main>
 
 <script>
@@ -99,15 +98,15 @@ const climateLives=[...lives,{key:"none",name:"この班は存在しない",cost
 const turns=[1,2,3,4];
 function n(id){return Number(document.getElementById(id)?.value||0)}
 function txt(id,v){const e=document.getElementById(id);if(e)e.textContent=v}
-function price(p,t,sub){return p.key==="premium"&&sub&&t===4?p.subsidizedPrice:p.price}
-function prodCost(p,t,sub){return p.key==="premium"&&sub&&t===4?1:p.cost}
+function price(p,t,sub){return p.key==="premium"&&t===4?p.subsidizedPrice:p.price}
+function prodCost(p,t,sub){return p.key==="premium"&&t===4?1:p.cost}
 
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll("section").forEach(s=>s.classList.remove("activeSection"));b.classList.add("active");document.getElementById(b.dataset.tab).classList.add("activeSection")});
 
 function buildEnterprise(){
  let h="";
  turns.forEach(t=>{
-  h+=`<h3>第${t}ターン</h3><table><tr><th class="label">項目</th>${products.map(p=>`<th>${p.name}${t===4&&p.key==="premium"?`<br><label style="font-size:11px;font-weight:700"><input id="e_subsidy" type="checkbox" style="width:auto"> 4Gで販売・生産コスト1G</label>`:""}</th>`).join("")}<th>合計</th></tr>`;
+  h+=`<h3>第${t}ターン</h3><table><tr><th class="label">項目</th>${products.map(p=>`<th>${p.name}${t===4&&p.key==="premium"?`<br><span style="font-size:11px;font-weight:700">第4T:4G販売・1G生産</span>`:""}</th>`).join("")}<th>合計</th></tr>`;
   [["startInv","開始在庫"],["made","新しく作った数"],["sold","売れた数"],["endInv","終了在庫"]].forEach(([k,label])=>{
    h+=`<tr><td class="label">${label}</td>`;
    products.forEach(p=>h+=`<td><input id="e_t${t}_${k}_${p.key}" type="number" min="0" ${k==="startInv"||k==="endInv"?"readonly class='readonly'":""}></td>`);
@@ -127,7 +126,7 @@ function buildEnterprise(){
  enterpriseTables.innerHTML=h;
 }
 function calcEnterprise(){
- let cash=n("e_initial"), prev={easy:0,normal:0,premium:0}, sub=(document.getElementById("e_subsidy")?.checked||false), salesByTurn={}, totalSales=0, totalLoad=0;
+ let cash=n("e_initial"), prev={easy:0,normal:0,premium:0}, sub=true, salesByTurn={}, totalSales=0, totalLoad=0;
  turns.forEach(t=>{
   let totals={startInv:0,made:0,sold:0,endInv:0}, sales=0,cost=0, load=0;
   products.forEach(p=>{
@@ -172,7 +171,7 @@ function buildConsumer(){
  consumerTables.innerHTML=h;
 }
 function calcConsumer(){
- let cash=n("c_initial"), sub=c_subsidy.checked, allSat=0, productLoadTotal=0;
+ let cash=n("c_initial"), sub=true, allSat=0, productLoadTotal=0;
  turns.forEach(t=>{
   let spend=0,sat=0;
   products.forEach(p=>{
